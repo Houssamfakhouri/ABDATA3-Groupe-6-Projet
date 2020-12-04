@@ -55,7 +55,7 @@ session.default_fetch_size = 1000000 #needed for large queries, otherwise driver
 query_insert="INSERT INTO emissions.v38 (country, country_code, ets_information, main_activity_sector_name, unit, value, year) VALUES ($${}$$, '{}', '{}', '{}', '{}', {}, '{}' );"
 
 for ct in data_origin.index:
-    CQL_query = query_insert.format(data_origin['Country/Region'][ct], data_origin['Lat'][ct],data_origin['Long'][ct],'{} ')
+    CQL_query = query_insert.format(data_origin['country'][ct], data_origin['country_code'][ct],data_origin['ETS information'][ct], data_origin['main activity sector name'][ct], data_origin['unit'][ct], data_origin['value'][ct], data_origin['year'][ct])
     session.execute(CQL_query)
 
 
