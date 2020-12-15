@@ -56,7 +56,7 @@ session.row_factory = pandas_factory
 session.default_fetch_size = 1000000 #needed for large queries, otherwise driver will do pagination. Default is 50000.
 
 # Insertion of dataframe data into Cassandra keyspace
-query_insert="INSERT INTO emissions5.emissions_unfccc (country_code, country, format_name, pollutant_name, sector_code, sector_name, parent_sector_code, unit, year, emissions, notation, publicationDate, dataSource, id) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', $${}$$);"
+query_insert="INSERT INTO emissions5.emissions_unfccc (country_code, country, format_name, pollutant_name, sector_code, sector_name, parent_sector_code, unit, year, emissions, notation, publicationDate, dataSource, id) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', $${}$$);"
 for ct in data_origin.index:
     CQL_query = query_insert.format(data_origin['Country_code'][ct], data_origin['Country'][ct],data_origin['Format_name'][ct], data_origin['Pollutant_name'][ct], data_origin['Sector_code'][ct], data_origin['Sector_name'][ct], data_origin['Parent_sector_code'][ct], data_origin['Unit'][ct], data_origin['Year'][ct], data_origin['emissions'][ct],data_origin['Notation'][ct], data_origin['PublicationDate'][ct], data_origin['DataSource'][ct], data_origin['id'][ct])
     session.execute(CQL_query)
