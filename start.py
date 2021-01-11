@@ -16,7 +16,7 @@ from cassandra.auth import PlainTextAuthProvider
 import warnings
 warnings.filterwarnings('ignore')
 
-print("Lancer l'importation des données (3 fichiers: émissions de CO2, températures et populations) dans Cassandra (attention, près d'un million de données, conter 10-20mn pour ce processus)")
+print("Lancer l'importation des données (3 fichiers: émissions de CO2, températures et populations) dans Cassandra (attention, près d'un million de données, compter 10-20mn pour ce processus)")
 responseStart = input("Taper 'oui' pour commencer, 'non' pour sortir : ")
 #print(responseStart)
 
@@ -37,13 +37,17 @@ if responseStart == "oui" :
     
     # *** CO2 EMISSIONS DATA ***
     # Unzip original file
-    #zip = zipfile.ZipFile('/home/groupe6/UNFCCC_v23.csv.zip')
-    zip = zipfile.ZipFile('/home/fitec/Bureau/Projet_fil_rouge/code/ABDATA3-Groupe-6-Projet/UNFCCC_v23.csv.zip')
-    zip.extractall()
-
+    try :
+        #zip = zipfile.ZipFile('/home/fitec/Bureau/Projet_fil_rouge/code/ABDATA3-Groupe-6-Projet/UNFCCC_v23.csv2.zip')
+        zip = zipfile.ZipFile('/home/groupe6/UNFCCC_v23.csv.zip')
+        zip.extractall()
+        print("Fichier des données CO2 extrait")
+    except :    
+        print("Problème: le fichier des données CO2 n'a pas pu s'extraire.")
+    
     # DEFINE PATH FOR CSV FILE
-    file_path = '/home/fitec/Bureau/Projet_fil_rouge/Data_sources/UNFCCC_v23.csv'
-    #file_path = '/home/groupe6/UNFCCC_v23.csv'
+    #file_path = '/home/fitec/Bureau/Projet_fil_rouge/Data_sources/UNFCCC_v23.csv'
+    file_path = '/home/groupe6/UNFCCC_v23.csv'
     
     # Creation of organized pandas dataframe
     data_origin = pd.read_csv(file_path, sep=",", quotechar='"', encoding="utf-8")
@@ -66,7 +70,7 @@ if responseStart == "oui" :
         
     session.row_factory = pandas_factory
     session.default_fetch_size = 1000000 #needed for large queries, otherwise driver will do pagination. Default is 50000.
-    """    
+     
     # Insertion of dataframe data into Cassandra keyspace
     query_insert="INSERT INTO emissions5.emissions_unfccc (country_code, country, format_name, pollutant_name, sector_code, sector_name, parent_sector_code, unit, year, emissions, notation, publicationDate, dataSource, id) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', $${}$$);"
     for ct in data_origin.index:
@@ -74,12 +78,12 @@ if responseStart == "oui" :
         session.execute(CQL_query)
     
     print("Ingestion des données d'émissions CO2 réalisée")
-    """
+    
     
     # *** TEMPERATURES DATA ***
     # DEFINE PATH FOR CSV FILE
-    file_path = '/home/fitec/Bureau/Projet_fil_rouge/Data_sources/global-average-air-temperature-anomalies-6.csv'
-    #file_path = '/home/groupe6/global-average-air-temperature-anomalies-6.csv'
+    #file_path = '/home/fitec/Bureau/Projet_fil_rouge/Data_sources/global-average-air-temperature-anomalies-6.csv'
+    file_path = '/home/groupe6/global-average-air-temperature-anomalies-6.csv'
     
     # Creation of organized pandas dataframe
     data_origin = pd.read_csv(file_path, sep=",", quotechar='"', encoding="utf-8")
