@@ -1,0 +1,51 @@
+version: '2'
+services:
+  cassandra:
+    image: docker.io/bitnami/cassandra:3-debian-10
+    ports:
+      - 7000:7000
+      - 9042:9042
+    volumes:
+      - cassandra_data:/bitnami
+    environment:
+      - CASSANDRA_SEEDS=cassandra,cassandra2
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_PASSWORD_SEEDER=yes
+      - CASSANDRA_PASSWORD=cassandra
+      # By default, Cassandra autodetects the available host memory and takes as much as it can.
+      # Therefore, memory options are mandatory if multiple Cassandras are launched in the same node.
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=200M
+  cassandra2:
+    image: docker.io/bitnami/cassandra:3-debian-10
+    ports:
+      - 7001:7000
+      - 9043:9042
+    volumes:
+      - cassandra2_data:/bitnami
+    environment:
+      - CASSANDRA_SEEDS=cassandra,cassandra2
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_PASSWORD=cassandra
+      # By default, Cassandra autodetects the available host memory and takes as much as it can.
+      # Therefore, memory options are mandatory if multiple Cassandras are launched in the same node.
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=200M
+  ubuntu:
+    image: ubuntu:20.04
+    # NEED TO PERFORM apt-get update, then apt-get install python3-pip to install python3
+    command: ["sleep","infinity"] #to keep it alive whith no active task
+    volumes:
+      - /home/fitec/Bureau/Projet_fil_rouge/code/ABDATA3-Groupe-6-Projet:/home/groupe6/
+
+volumes:
+  cassandra_data:
+    driver: local
+  cassandra2_data:
+    driver: local
+  ubuntu_data:
+    driver: local
+
+      
+      
+
