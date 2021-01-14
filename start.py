@@ -11,12 +11,11 @@ import pandas as pd
 import numpy as np
 import zipfile
 
-"""
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 import warnings
 warnings.filterwarnings('ignore')
-"""
+
 print("Lancer l'importation des données (3 fichiers: émissions de CO2, températures et populations) dans Cassandra (attention, près d'un million de données, compter 10-20mn pour ce processus)")
 responseStart = input("Taper 'oui' pour commencer, 'non' pour sortir : ")
 #print(responseStart)
