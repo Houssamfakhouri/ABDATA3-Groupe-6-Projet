@@ -38,6 +38,10 @@ services:
     command: ["sleep","infinity"] #to keep it alive whith no active task
     volumes:
       - /home/fitec/Bureau/Projet_fil_rouge/code/ABDATA3-Groupe-6-Projet:/home/groupe6/
+    ports:
+      - 9042:9042
+    #extra_hosts:
+    #  - "host.docker.internal:172.0.0.1"
 
 volumes:
   cassandra_data:
